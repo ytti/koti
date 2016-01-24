@@ -73,3 +73,31 @@ files:
 
 * ```main``` is compiled from the app root, i.e. ```app/zsh```
 * ```poop``` is compiled from the app root+poop, i.e. ```app/zsh/poop```
+
+
+# example #
+```
+[ytti@lintukoto ~]% ./koti
+koti not installed, try 'koti --install git@github.com:user/repo'
+[ytti@lintukoto ~]% ls -lad .koti
+ls: .koti: No such file or directory
+[1 ytti@lintukoto ~]% ./koti --install git@github.com:ytti/dot
+Updating repo main... ok
+Updating repo muttpaske... ok
+Building zsh config main from main... done
+Building zsh config poop from main... done
+Building mutt config main from muttpaske... done
+Linking /Users/ytti/.koti/composite/zsh/main to /Users/ytti/.zshrc_main
+Linking /Users/ytti/.koti/composite/zsh/poop to /Users/ytti/.zshrc_poop
+Linking /Users/ytti/.koti/composite/mutt/main to /Users/ytti/.muttrc
+[ytti@lintukoto ~]% ./koti
+Updating repo main... ok
+Updating repo muttpaske... ok
+Building zsh config main from main... done
+Building zsh config poop from main... done
+Building mutt config main from muttpaske... done
+Linking /Users/ytti/.koti/composite/zsh/main to /Users/ytti/.zshrc_main
+Linking /Users/ytti/.koti/composite/zsh/poop to /Users/ytti/.zshrc_poop
+Linking /Users/ytti/.koti/composite/mutt/main to /Users/ytti/.muttrc
+[ytti@lintukoto ~]%
+```
