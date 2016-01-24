@@ -82,6 +82,7 @@ koti not installed, try 'koti --install git@github.com:user/repo'
 [ytti@lintukoto ~]% ls -lad .koti
 ls: .koti: No such file or directory
 [1 ytti@lintukoto ~]% ./koti --install git@github.com:ytti/dot
+Installing from git@github.com:ytti/dot... done
 Updating repo main... ok
 Updating repo muttpaske... ok
 Building zsh config main from main... done
