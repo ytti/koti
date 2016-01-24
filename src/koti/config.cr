@@ -12,7 +12,6 @@ module Koti
   DIR_MODE  = 0o700
   FILE_MODE = 0o600
   MOCK_YAML_CONFIG = <<-EOF
----
   repository:
     main: moi
   EOF
