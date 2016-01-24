@@ -1,7 +1,7 @@
-= Koti =
+# Koti #
 Koti is simple hack to fetch my dotfiles from github and create symlinks for them.
 
-= Typical directory stucture =
+# Typical directory stucture #
 ```
 [ytti@lintukoto ~/.koti]% find .|grep -v .git
 .
@@ -49,7 +49,7 @@ repository 'main' is something you must have, other repositories are optional. '
 * ```app/nae/host/OSNAME/files``` are included only if hostname (uname) is hostname
 * same structure can be inside ```app/name/something```, this is used if app needs >1 configuration file
 
-= koti.yaml =
+# koti.yaml #
 ```
 [ytti@lintukoto ~/.koti/repository/main]% cat koti.yaml
 ---
@@ -61,7 +61,7 @@ repository:
 
 So far it only iterates all repos you have
 
-= app config =
+# app config #
 ```
 [ytti@lintukoto ~/.koti/repository/main/app/zsh]% cat config.yaml
 ---
