@@ -34,23 +34,26 @@ module Koti
     end
 
     def update
-      build_composites collapsed_app_configs
+      build collapsed_app_configs
     end
 
     def installed?
       @installed
     end
 
-    private def  build_composites(apps)
-      apps.each do |app, names|
+    private def  build(apps)
+      apps.each do |app, cfg|
         app_dir = File.join ROOT, "composite", app
         Dir.mkdir_p app_dir, DIR_MODE
-        names.each do |name, file|
-          composite_file = File.join app_dir, name
-          config = file["config"]
-          target = file["target"]
+        cfg.files.each do |_, file|
+          composite_file = File.join app_dir, file.source
+          config = file.config
+          target = file.target
           File.write composite_file, config, FILE_MODE
           symlink(composite_file, target)
+        end
+        cfg.links.each do |real, symbolic|
+          symlink(real, symbolic)
         end
       end
     end
@@ -72,18 +75,16 @@ module Koti
     end
 
     private def collapsed_app_configs
-      apps = {} of String => Hash(String, Hash(String, String))
+      apps = {} of String => App::Collapsed
       get_app_configs.each do |repo, repo_apps|
-        repo_apps.each do |app, files|
-          apps[app] = {} of String => Hash(String, String) unless apps.key? app
-          files.each do |name, file|
-            Out.str "Building #{app} config #{name} from #{repo}... ", 3
-            apps[app][name] = {} of String => String unless apps[app].key? app
-            apps[app][name]["target"] = file["target"]
-            apps[app][name]["config"] = "" unless apps[app][name].key? "config"
-            apps[app][name]["config"] += file["config"]
+        repo_apps.each do |app, config|
+          apps[app] = App::Collapsed.new unless apps.has_key? app
+          config.files.each do |file|
+            Out.str "Building #{app} config #{file.source} from #{repo}... ", 3
+            apps[app].merge(file)
             Out.put "done", 3, :ok
           end
+          apps[app].links.merge! config.links
         end
       end
       apps
@@ -91,9 +92,9 @@ module Koti
 
     private def get_app_configs
       @repo.update_all
-      repos = {} of String => Hash(String, Hash(String, Hash(String, String)))
+      repos = {} of String => Hash(String, App::Config)
       @repo.names.each do |repo|
-        repos[repo] = {} of String => Hash(String, Hash(String, String))
+        repos[repo] = {} of String => App::Config
         @repo.apps(repo).each do |app|
           repos[repo][app] = @app.build(app, repo)
         end
